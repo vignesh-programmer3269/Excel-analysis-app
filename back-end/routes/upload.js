@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const UploadedFile = require("../models/uploadedFile");
 
 const router = express.Router();
 
@@ -32,15 +33,30 @@ const fileFilter = (request, file, callback) => {
 const upload = multer({ storage, fileFilter });
 
 // Upload route
-router.post("/excel", upload.single("file"), (request, response) => {
-  if (!request.file) {
-    return response.status(400).json({ message: "No file uploaded" });
-  }
+router.post("/excel", upload.single("file"), async (request, response) => {
+  try {
+    if (!request.file) {
+      return response.status(400).json({ message: "No file uploaded" });
+    }
 
-  response.status(200).json({
-    message: "File uploaded successfully",
-    filename: request.file.filename,
-  });
+    const savedFile = new UploadedFile({
+      filename: request.file.filename,
+      originalname: request.file.originalname,
+      path: request.file.path,
+      mimetype: request.file.mimetype,
+      size: request.file.size,
+    });
+
+    await savedFile.save();
+
+    response.json({
+      message: "File uploaded and saved to DB",
+      file: savedFile,
+    });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: "Something went wrong" });
+  }
 });
 
 module.exports = router;
