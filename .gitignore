@@ -1,0 +1,24 @@
+# Node modules (frontend + backend)
+node_modules/
+front-end/node_modules/
+back-end/node_modules/
+
+# Build folders
+front-end/build/
+back-end/uploads/
+
+# Env files (secrets)
+.env
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Testing and Coverage
+coverage/
