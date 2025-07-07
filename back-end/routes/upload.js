@@ -1,9 +1,11 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const UploadedFile = require("../models/uploadedFile");
 const XLSX = require("xlsx");
 const fs = require("fs");
+
+const UploadedFile = require("../models/uploadedFile");
+const ExcelData = require("../models/ExcelData");
 
 const router = express.Router();
 
@@ -61,6 +63,7 @@ router.post("/excel", upload.single("file"), async (request, response) => {
   }
 });
 
+// Parse Excel file route
 router.get("/parse/:filename", (request, response) => {
   const filePath = `uploads/${request.params.filename}`;
 
@@ -70,6 +73,11 @@ router.get("/parse/:filename", (request, response) => {
 
   try {
     const workbook = XLSX.readFile(filePath);
+
+    if (!workbook.SheetNames.length) {
+      return response.status(400).json({ error: "Excel file has no sheets" });
+    }
+
     const sheetName = workbook.SheetNames[0]; // first sheet
     const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
@@ -81,6 +89,43 @@ router.get("/parse/:filename", (request, response) => {
   } catch (error) {
     console.error(error);
     response.status(500).json({ error: "Failed to parse Excel file" });
+  }
+});
+
+// Save parsed Excel data to DB
+router.post("/save/:filename", async (request, response) => {
+  const filePath = `uploads/${request.params.filename}`;
+  const fileRecord = await UploadedFile.findOne({
+    filename: request.params.filename,
+  });
+
+  if (!fileRecord) {
+    return response.status(404).json({ error: "File metadata not found" });
+  }
+
+  try {
+    const workbook = XLSX.readFile(filePath);
+
+    if (!workbook.SheetNames.length) {
+      return response.status(400).json({ error: "Excel file has no sheets" });
+    }
+
+    const sheetName = workbook.SheetNames[0];
+    const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+    const saved = await ExcelData.create({
+      fileId: fileRecord._id,
+      sheetName,
+      data: sheetData,
+    });
+
+    response.json({
+      message: "Excel data saved successfully",
+      excelDataId: saved._id,
+    });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: "Failed to parse and save Excel data" });
   }
 });
 
