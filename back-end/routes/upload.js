@@ -2,6 +2,8 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const UploadedFile = require("../models/uploadedFile");
+const XLSX = require("xlsx");
+const fs = require("fs");
 
 const router = express.Router();
 
@@ -56,6 +58,29 @@ router.post("/excel", upload.single("file"), async (request, response) => {
   } catch (error) {
     console.error(error);
     response.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+router.get("/parse/:filename", (request, response) => {
+  const filePath = `uploads/${request.params.filename}`;
+
+  if (!fs.existsSync(filePath)) {
+    return response.status(404).json({ error: "File not found" });
+  }
+
+  try {
+    const workbook = XLSX.readFile(filePath);
+    const sheetName = workbook.SheetNames[0]; // first sheet
+    const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+    response.json({
+      message: "Excel data parsed successfully",
+      sheetName,
+      data: sheetData,
+    });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: "Failed to parse Excel file" });
   }
 });
 
