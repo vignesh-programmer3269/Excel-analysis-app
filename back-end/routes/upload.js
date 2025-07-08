@@ -129,4 +129,26 @@ router.post("/save/:filename", async (request, response) => {
   }
 });
 
+// Get all uploaded files
+router.get("/files", async (request, response) => {
+  try {
+    const files = await UploadedFile.find().sort({ uploadedAt: -1 });
+    response.json({ files });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: "Failed to fetch uploaded files" });
+  }
+});
+
+// Get all parsed Excel chart data
+router.get("/charts", async (request, response) => {
+  try {
+    const charts = await ExcelData.find().populate("fileId", "originalname");
+    response.json({ charts });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: "Failed to fetch charts" });
+  }
+});
+
 module.exports = router;
