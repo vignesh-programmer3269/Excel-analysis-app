@@ -40,8 +40,8 @@ const upload = multer({ storage, fileFilter });
 // Upload route
 router.post(
   "/excel",
-  upload.single("file"),
   authMiddleware,
+  upload.single("file"),
   async (request, response) => {
     try {
       if (!request.file) {

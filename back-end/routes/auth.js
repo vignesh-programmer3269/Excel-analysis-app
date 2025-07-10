@@ -16,11 +16,9 @@ router.post("/login", async (request, response) => {
     if (!isMatch)
       return response.status(401).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign(
-      { userId: user._id },
-      "excel-sheet-analysis-secret-code",
-      { expiresIn: "7d" }
-    );
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     response.json({ message: "Login successful", token });
   } catch (err) {
