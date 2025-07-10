@@ -6,6 +6,7 @@ const fs = require("fs");
 
 const UploadedFile = require("../models/uploadedFile");
 const ExcelData = require("../models/ExcelData");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -37,34 +38,40 @@ const fileFilter = (request, file, callback) => {
 const upload = multer({ storage, fileFilter });
 
 // Upload route
-router.post("/excel", upload.single("file"), async (request, response) => {
-  try {
-    if (!request.file) {
-      return response.status(400).json({ message: "No file uploaded" });
+router.post(
+  "/excel",
+  upload.single("file"),
+  authMiddleware,
+  async (request, response) => {
+    try {
+      if (!request.file) {
+        return response.status(400).json({ message: "No file uploaded" });
+      }
+
+      const savedFile = new UploadedFile({
+        userId: request.user.id,
+        filename: request.file.filename,
+        originalname: request.file.originalname,
+        path: request.file.path,
+        mimetype: request.file.mimetype,
+        size: request.file.size,
+      });
+
+      await savedFile.save();
+
+      response.json({
+        message: "File uploaded and saved to DB",
+        file: savedFile,
+      });
+    } catch (error) {
+      console.error(error);
+      response.status(500).json({ error: "Something went wrong" });
     }
-
-    const savedFile = new UploadedFile({
-      filename: request.file.filename,
-      originalname: request.file.originalname,
-      path: request.file.path,
-      mimetype: request.file.mimetype,
-      size: request.file.size,
-    });
-
-    await savedFile.save();
-
-    response.json({
-      message: "File uploaded and saved to DB",
-      file: savedFile,
-    });
-  } catch (error) {
-    console.error(error);
-    response.status(500).json({ error: "Something went wrong" });
   }
-});
+);
 
 // Parse Excel file route
-router.get("/parse/:filename", (request, response) => {
+router.get("/parse/:filename", authMiddleware, (request, response) => {
   const filePath = `uploads/${request.params.filename}`;
 
   if (!fs.existsSync(filePath)) {
@@ -93,7 +100,7 @@ router.get("/parse/:filename", (request, response) => {
 });
 
 // Save parsed Excel data to DB
-router.post("/save/:filename", async (request, response) => {
+router.post("/save/:filename", authMiddleware, async (request, response) => {
   const filePath = `uploads/${request.params.filename}`;
   const fileRecord = await UploadedFile.findOne({
     filename: request.params.filename,
@@ -115,6 +122,7 @@ router.post("/save/:filename", async (request, response) => {
 
     const saved = await ExcelData.create({
       fileId: fileRecord._id,
+      userId: request.user.id,
       sheetName,
       data: sheetData,
     });
@@ -130,7 +138,7 @@ router.post("/save/:filename", async (request, response) => {
 });
 
 // Get all uploaded files
-router.get("/files", async (request, response) => {
+router.get("/files", authMiddleware, async (request, response) => {
   try {
     const files = await UploadedFile.find().sort({ uploadedAt: -1 });
     response.json({ files });
@@ -141,7 +149,7 @@ router.get("/files", async (request, response) => {
 });
 
 // Get all parsed Excel chart data
-router.get("/charts", async (request, response) => {
+router.get("/charts", authMiddleware, async (request, response) => {
   try {
     const charts = await ExcelData.find().populate("fileId", "originalname");
     response.json({ charts });
