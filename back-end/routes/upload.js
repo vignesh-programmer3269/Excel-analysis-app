@@ -71,11 +71,22 @@ router.post(
 );
 
 // Parse Excel file route
-router.get("/parse/:filename", authMiddleware, (request, response) => {
+router.get("/parse/:filename", authMiddleware, async (request, response) => {
   const filePath = `uploads/${request.params.filename}`;
 
   if (!fs.existsSync(filePath)) {
     return response.status(404).json({ error: "File not found" });
+  }
+
+  const fileRecord = await UploadedFile.findOne({
+    filename: request.params.filename,
+    userId: request.user.id,
+  });
+
+  if (!fileRecord) {
+    return response
+      .status(401)
+      .json({ error: "Unauthorized: File not found for this user" });
   }
 
   try {
@@ -102,12 +113,20 @@ router.get("/parse/:filename", authMiddleware, (request, response) => {
 // Save parsed Excel data to DB
 router.post("/save/:filename", authMiddleware, async (request, response) => {
   const filePath = `uploads/${request.params.filename}`;
+
+  if (!fs.existsSync(filePath)) {
+    return response.status(404).json({ error: "File not found" });
+  }
+
   const fileRecord = await UploadedFile.findOne({
     filename: request.params.filename,
+    userId: request.user.id,
   });
 
   if (!fileRecord) {
-    return response.status(404).json({ error: "File metadata not found" });
+    return response
+      .status(401)
+      .json({ error: "Unauthorized: File not found for this user" });
   }
 
   try {
@@ -140,7 +159,9 @@ router.post("/save/:filename", authMiddleware, async (request, response) => {
 // Get all uploaded files
 router.get("/files", authMiddleware, async (request, response) => {
   try {
-    const files = await UploadedFile.find().sort({ uploadedAt: -1 });
+    const files = await UploadedFile.find({ userId: request.user.id }).sort({
+      uploadedAt: -1,
+    });
     response.json({ files });
   } catch (error) {
     console.error(error);
@@ -151,7 +172,10 @@ router.get("/files", authMiddleware, async (request, response) => {
 // Get all parsed Excel chart data
 router.get("/charts", authMiddleware, async (request, response) => {
   try {
-    const charts = await ExcelData.find().populate("fileId", "originalname");
+    const charts = await ExcelData.find({ userId: request.user.id }).populate(
+      "fileId",
+      "originalname"
+    );
     response.json({ charts });
   } catch (error) {
     console.error(error);
