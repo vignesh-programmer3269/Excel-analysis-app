@@ -110,6 +110,16 @@ router.get("/parse/:filename", authMiddleware, async (request, response) => {
   }
 });
 
+// Delete temporary file route
+router.delete("/temp/:filename", authMiddleware, (request, response) => {
+  const filePath = path.join("uploads", request.params.filename);
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+    return response.json({ message: "Temporary file deleted" });
+  }
+  response.status(404).json({ error: "File not found" });
+});
+
 // Save parsed Excel data to DB
 router.post("/save/:filename", authMiddleware, async (request, response) => {
   const filePath = `uploads/${request.params.filename}`;
