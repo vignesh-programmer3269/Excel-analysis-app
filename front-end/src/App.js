@@ -9,8 +9,11 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route exct path="login" element={<Login />} />
-        <ProtectedRoute path="dashboard" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
+        // Protected routes
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Dashboard />} />
+        </Route>
       </Routes>
     </div>
   );
