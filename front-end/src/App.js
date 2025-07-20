@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/login" element={<Login />} />
-        // Protected routes
+
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Dashboard />} />
         </Route>

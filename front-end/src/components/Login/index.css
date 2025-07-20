@@ -1,0 +1,118 @@
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f3f3f3;
+}
+
+.login-logo {
+  width: 300px;
+  margin-right: 100px;
+}
+
+.login-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  padding: 30px 40px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 2px 4px 16px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-form > h1 {
+  margin: 20px 0;
+  font-family: "Arial", sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  color: #333333;
+}
+
+.login-form > label {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  color: #555555;
+  margin: 10px 0;
+  align-self: flex-start;
+}
+
+.login-form > input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-family: "Roboto", sans-serif;
+  outline: none;
+}
+
+.login-form > input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px #007bff80;
+}
+
+.login-form > div {
+  display: flex;
+  align-items: center;
+  align-self: start;
+  margin-top: 10px;
+}
+
+.login-form > div > input {
+  margin-right: 10px;
+}
+
+.login-form > div > label {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  color: #555555;
+}
+
+.login-form > button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 30px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-form > button:hover {
+  background-color: #0056b3;
+  transition: background-color 0.3s ease;
+}
+
+.login-form > p {
+  margin-top: 20px;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  color: #555555;
+}
+
+.login-form > p > span {
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.login-form > p > span:hover {
+  color: #1184ff;
+  text-decoration: underline;
+  transition: text-decoration 0.3s ease;
+}
+
+.login-form > .error-message {
+  color: red;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+  width: 100%;
+}
