@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -9,7 +9,15 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
+
   const navigate = useNavigate();
+  useEffect(() => {
+    const token = Cookies.get("jwt_token");
+    if (token) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate]);
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -34,7 +42,7 @@ const Login = () => {
 
       navigate("/", { replace: true });
     } catch (error) {
-      this.setState({ error: error.message });
+      setError({ error: error.message });
     }
   };
 
