@@ -108,7 +108,7 @@ router.post(
 // Create chart route
 router.post("/chart", authMiddleware, async (request, response) => {
   try {
-    const { fileId, chartTitle, xAxis, yAxis, chartType, description } =
+    const { fileId, chartName, xAxis, yAxis, chartType, description } =
       request.body;
 
     const fileData = await FileData.findOne({
@@ -129,7 +129,7 @@ router.post("/chart", authMiddleware, async (request, response) => {
       sheetName: fileData.sheetName,
       mimeType: fileData.mimeType,
       fileSize: fileData.fileSize,
-      chartTitle,
+      chartName,
       xAxis,
       yAxis,
       chartType,

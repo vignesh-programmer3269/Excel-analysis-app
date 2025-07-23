@@ -11,7 +11,7 @@ const ExcelDataSchema = new mongoose.Schema({
   sheetName: String,
   mimeType: String,
   fileSize: Number,
-  chartTitle: String,
+  chartName: String,
   xAxis: String,
   yAxis: String,
   chartType: {
