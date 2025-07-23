@@ -1,22 +1,25 @@
 const mongoose = require("mongoose");
 
-const ExcelDataSchema = new mongoose.Schema({
+const uploadedFileSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
-  fileId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+  fileName: {
+    type: String,
+    unique: true,
     required: true,
   },
+  originalFileName: String,
   sheetName: String,
+  mimeType: String,
+  fileSize: Number,
   data: [Object],
-  createdAt: {
+  uploadedAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = mongoose.model("ExcelData", ExcelDataSchema);
+module.exports = mongoose.model("FileData", uploadedFileSchema);
