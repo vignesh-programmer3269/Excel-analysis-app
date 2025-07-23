@@ -11,6 +11,8 @@ API.interceptors.request.use((config) => {
   if (jwtToken) {
     config.headers.Authorization = `Bearer ${jwtToken}`;
   }
+
+  return config;
 });
 
 export default API;

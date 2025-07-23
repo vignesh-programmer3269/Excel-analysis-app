@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import Header from "../Header";
 import "./index.css";
 
+import API from "../../api";
+
 class Dashboard extends Component {
   state = {
     files: [],
@@ -18,13 +20,9 @@ class Dashboard extends Component {
 
   getFilesCount = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/upload/files", {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("jwt_token")}`,
-        },
-      });
+      const response = await API.get("/upload/files");
 
-      const data = await response.json();
+      const data = response.data;
       this.setState({ files: data.files });
     } catch (error) {
       console.error("Error fetching files count:", error);
@@ -33,13 +31,9 @@ class Dashboard extends Component {
 
   getChartsCount = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/upload/charts", {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("jwt_token")}`,
-        },
-      });
+      const response = await API.get("/upload/charts");
 
-      const data = await response.json();
+      const data = response.data;
       this.setState({ charts: data.charts });
     } catch (error) {
       console.error("Error fetching charts count:", error);

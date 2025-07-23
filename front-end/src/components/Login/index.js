@@ -29,12 +29,12 @@ const Login = () => {
         },
         body: JSON.stringify({ email, password }),
       });
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error("Login failed");
+        throw new Error(data.message);
       }
 
-      const data = await response.json();
       Cookies.set("jwt_token", data.token, { expires: 7 });
       setEmail("");
       setPassword("");
@@ -42,7 +42,7 @@ const Login = () => {
 
       navigate("/", { replace: true });
     } catch (error) {
-      setError({ error: error.message });
+      setError(error.message);
     }
   };
 
