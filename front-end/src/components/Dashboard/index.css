@@ -1,0 +1,156 @@
+.dashboard-container {
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 30px;
+  background-color: #f4f4f4;
+}
+
+.file-chart-count {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 20px;
+}
+
+.file-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 20px;
+  border-right: 6px solid #007bf0;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px 4px rgba(0, 0, 0, 0.1);
+  margin-right: 40px;
+}
+
+.chart-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 20px;
+  border-right: 6px solid #00eb27;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px 4px rgba(0, 0, 0, 0.1);
+  margin-left: 40px;
+}
+
+.file-count > h1,
+.chart-count > h1 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+}
+
+.file-count > p,
+.chart-count > p {
+  font-size: 26px;
+  color: #00a2ff;
+  font-weight: 700;
+}
+
+.files-container,
+.charts-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.files-container > h1,
+.charts-container > h1 {
+  margin-top: 20px;
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
+  align-self: flex-start;
+  margin-left: 10%;
+}
+
+.files-list,
+.charts-list {
+  width: 1000px;
+  max-height: 400px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.files-list {
+  border-left: 6px solid #007bf0;
+}
+
+.charts-list {
+  border-left: 6px solid #00eb27;
+}
+
+.files-list > p,
+.charts-list > p {
+  width: 100%;
+  text-align: center;
+  color: #222;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.file-header,
+.chart-header {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid #aaaaaa;
+  p {
+    text-align: center;
+    margin: 0;
+    font-weight: 600;
+    color: #373737;
+  }
+}
+
+.file-header > p {
+  width: 330px;
+}
+
+.chart-header > p {
+  width: 250px;
+}
+
+.file-item,
+.chart-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.file-item > p {
+  margin: 0;
+  color: #555555;
+  width: 300px;
+  text-align: center;
+}
+.chart-item > p {
+  margin: 0;
+  color: #555555;
+  width: 250px;
+  text-align: center;
+}
+
+.chart-item > p:nth-of-type(2),
+.chart-item > p:nth-of-type(3) {
+  text-align: center;
+}
