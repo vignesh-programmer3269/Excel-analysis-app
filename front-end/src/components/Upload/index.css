@@ -1,0 +1,86 @@
+.upload-page {
+  min-height: 100vh;
+}
+
+.drag-area {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: #007bf030;
+  padding: 50px;
+  div {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff;
+  }
+}
+
+.drag-over {
+  display: flex;
+}
+
+.corner-icon {
+  font-size: 150px;
+  color: #ffffff;
+}
+
+.upload-container {
+  height: 84vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  background-color: #f0f4f8;
+}
+
+.upload-element {
+  width: 400px;
+  height: 300px;
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 16px 4px rgb(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-element > button {
+  padding: 16px 28px;
+  background-color: #007bf0;
+  color: white;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+  outline: none;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.upload-element > button:hover {
+  background-color: #0056b3;
+}
+
+.upload-element > h1 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222e3a;
+  margin-top: 30px;
+}
+
+.upload-element > p {
+  font-size: 14px;
+  color: #333366;
+  margin-top: 10px;
+}

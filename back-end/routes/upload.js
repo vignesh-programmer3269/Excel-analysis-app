@@ -84,23 +84,6 @@ router.post(
       });
     } catch (error) {
       console.error("Upload error:", error);
-
-      // Multer errors
-      if (error instanceof multer.MulterError) {
-        if (error.code === "LIMIT_FILE_SIZE") {
-          return response
-            .status(413)
-            .json({ message: "File too large. Max size is 5 MB" });
-        }
-        return response.status(400).json({ message: error.message });
-      }
-
-      // Custom fileFilter error
-      if (error.message === "Only Excel files are allowed!") {
-        return response.status(400).json({ message: error.message });
-      }
-
-      response.status(500).json({ message: "Internal server error" });
     }
   }
 );
