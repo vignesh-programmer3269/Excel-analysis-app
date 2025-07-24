@@ -74,6 +74,7 @@ const Login = () => {
           placeholder="Enter Your Email"
           onChange={onChangeEmail}
           value={email}
+          required
         />
         <label id="password" htmlFor="password">
           Password
@@ -84,6 +85,7 @@ const Login = () => {
           placeholder="Enter Your Password"
           onChange={onChangePassword}
           value={password}
+          required
         />
         <div>
           <input

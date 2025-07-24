@@ -21,10 +21,6 @@ const Register = () => {
 
   const handleRegister = async (event) => {
     event.preventDefault();
-    if (!name || !email || !password || !confirmPassword) {
-      setError("All fields are required");
-      return;
-    }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -95,6 +91,7 @@ const Register = () => {
           placeholder="Enter Your Name"
           onChange={onChangeName}
           value={name}
+          required
         />
         <label htmlFor="email">Email</label>
         <input
@@ -103,6 +100,7 @@ const Register = () => {
           placeholder="Enter Your Email"
           value={email}
           onChange={onChangeEmail}
+          required
         />
         <label htmlFor="password">Password</label>
         <input
@@ -111,6 +109,7 @@ const Register = () => {
           placeholder="Enter Your Password"
           value={password}
           onChange={onChangePassword}
+          required
         />
         <label htmlFor="confirm-password">Confirm Password</label>
         <input
@@ -119,6 +118,7 @@ const Register = () => {
           placeholder="Confirm Your Password"
           value={confirmPassword}
           onChange={onChangeConfirmPassword}
+          required
         />
         <div>
           <input

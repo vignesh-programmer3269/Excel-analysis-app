@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import Upload from "./components/Upload";
+import CreateChartWrapper from "./components/CreateChartWrapper";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
@@ -18,6 +19,10 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/upload" element={<Upload />} />
+          <Route
+            path="/create-chart/:fileId"
+            element={<CreateChartWrapper />}
+          />
         </Route>
       </Routes>
     </div>

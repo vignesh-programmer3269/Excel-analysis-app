@@ -29,7 +29,7 @@ const Upload = () => {
       });
 
       console.log("Upload success:", response.data);
-      navigate("/create-chart");
+      navigate(`/create-chart/${response.data.file._id}`);
     } catch (error) {
       alert(error);
     }

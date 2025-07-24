@@ -88,36 +88,64 @@ router.post(
   }
 );
 
+// Get a file's data
+router.get("/file/:id", authMiddleware, async (request, response) => {
+  try {
+    const fileId = request.params.id;
+    const userId = request.user.id;
+
+    const file = await FileData.findOne({
+      _id: fileId,
+      userId,
+    });
+
+    if (!file) {
+      return response.status(404).json({
+        message:
+          "We couldn’t locate your file. Make sure it has been uploaded and you're accessing the correct file.",
+      });
+    }
+    response.json({ file });
+  } catch (error) {
+    response.status(404).json({
+      message:
+        "We couldn’t locate your file. Make sure it has been uploaded and you're accessing the correct file.",
+    });
+  }
+});
+
 // Create chart route
 router.post("/chart", authMiddleware, async (request, response) => {
   try {
-    const { fileId, chartName, xAxis, yAxis, chartType, description } =
-      request.body;
-
-    const fileData = await FileData.findOne({
-      _id: fileId,
-      userId: request.user.id,
-    });
-
-    if (!fileData) {
-      return response
-        .status(404)
-        .json({ message: "File not found or unauthorized" });
-    }
-
-    const chartData = new ChartData({
-      userId: request.user.id,
-      fileName: fileData.fileName,
-      originalFileName: fileData.originalFileName,
-      sheetName: fileData.sheetName,
-      mimeType: fileData.mimeType,
-      fileSize: fileData.fileSize,
+    const {
+      fileName,
+      originalFileName,
+      fileId,
+      sheetName,
+      mimeType,
+      fileSize,
       chartName,
       xAxis,
       yAxis,
       chartType,
       description,
-      data: fileData.data,
+      data,
+    } = request.body;
+
+    const chartData = new ChartData({
+      userId: request.user.id,
+      fileName,
+      originalFileName,
+      fileId,
+      sheetName,
+      mimeType,
+      fileSize,
+      chartName,
+      xAxis,
+      yAxis,
+      chartType,
+      description,
+      data,
     });
 
     await chartData.save();

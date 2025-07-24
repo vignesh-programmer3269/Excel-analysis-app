@@ -8,6 +8,7 @@ const ExcelDataSchema = new mongoose.Schema({
   },
   fileName: String,
   originalFileName: String,
+  fileId: String,
   sheetName: String,
   mimeType: String,
   fileSize: Number,
@@ -16,7 +17,7 @@ const ExcelDataSchema = new mongoose.Schema({
   yAxis: String,
   chartType: {
     type: String,
-    enum: ["bar", "line", "pie", "scatter", "area"],
+    enum: ["bar", "line", "pie", "doughnut", "radar"],
     required: true,
   },
   description: String,
