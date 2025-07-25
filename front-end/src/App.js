@@ -5,6 +5,7 @@ import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import Upload from "./components/Upload";
 import CreateChartWrapper from "./components/CreateChartWrapper";
+import ViewChart from "./components/ViewChart";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
@@ -23,6 +24,7 @@ function App() {
             path="/create-chart/:fileId"
             element={<CreateChartWrapper />}
           />
+          <Route path="/chart/:chartId" element={<ViewChart />} />
         </Route>
       </Routes>
     </div>

@@ -88,32 +88,6 @@ router.post(
   }
 );
 
-// Get a file's data
-router.get("/file/:id", authMiddleware, async (request, response) => {
-  try {
-    const fileId = request.params.id;
-    const userId = request.user.id;
-
-    const file = await FileData.findOne({
-      _id: fileId,
-      userId,
-    });
-
-    if (!file) {
-      return response.status(404).json({
-        message:
-          "We couldn’t locate your file. Make sure it has been uploaded and you're accessing the correct file.",
-      });
-    }
-    response.json({ file });
-  } catch (error) {
-    response.status(404).json({
-      message:
-        "We couldn’t locate your file. Make sure it has been uploaded and you're accessing the correct file.",
-    });
-  }
-});
-
 // Create chart route
 router.post("/chart", authMiddleware, async (request, response) => {
   try {
@@ -154,6 +128,58 @@ router.post("/chart", authMiddleware, async (request, response) => {
   } catch (error) {
     console.error(error);
     response.status(500).json({ message: "Failed to create chart" });
+  }
+});
+
+// Get a file's data
+router.get("/file/:id", authMiddleware, async (request, response) => {
+  try {
+    const fileId = request.params.id;
+    const userId = request.user.id;
+
+    const file = await FileData.findOne({
+      _id: fileId,
+      userId,
+    });
+
+    if (!file) {
+      return response.status(404).json({
+        message:
+          "We couldn’t locate your file. Make sure it has been uploaded and you're accessing the correct file.",
+      });
+    }
+    response.json({ file });
+  } catch (error) {
+    response.status(404).json({
+      message:
+        "We couldn’t locate your file. Make sure it has been uploaded and you're accessing the correct file.",
+    });
+  }
+});
+
+// Get a chart's data
+router.get("/chart/:id", authMiddleware, async (request, response) => {
+  try {
+    const chartId = request.params.id;
+    const userId = request.user.id;
+
+    const chart = await ChartData.findOne({
+      _id: chartId,
+      userId,
+    });
+
+    if (!chart) {
+      return response.status(404).json({
+        message:
+          "We couldn't find your chart. Please make sure it has been created and that you're accessing the correct chart.",
+      });
+    }
+    response.json({ chart });
+  } catch (error) {
+    response.status(404).json({
+      message:
+        "We couldn't find your chart. Please make sure it has been created and that you're accessing the correct chart.",
+    });
   }
 });
 

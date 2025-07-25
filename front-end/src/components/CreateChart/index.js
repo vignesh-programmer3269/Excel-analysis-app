@@ -29,7 +29,7 @@ class CreateChart extends Component {
 
       this.setState({
         fileData: [...data.file.data],
-        fileMetaData: data,
+        fileMetaData: data.file,
       });
     } catch (error) {
       alert(error.response.data.message);
@@ -107,6 +107,18 @@ class CreateChart extends Component {
         chartType,
         description,
       } = this.state;
+
+      const isYNumeric = fileData.every((row) => {
+        const value = row[yAxis];
+        return !isNaN(value) && value !== null && value !== "";
+      });
+
+      if (!isYNumeric) {
+        alert(
+          "Please select a numeric column for the Y-axis to render the chart."
+        );
+        return;
+      }
       const { fileName, originalFileName, sheetName, mimeType, fileSize } =
         fileMetaData;
       const { fileId } = this.props;
