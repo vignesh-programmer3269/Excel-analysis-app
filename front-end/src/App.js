@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Dashboard from "./components/Dashboard";
+import DashboardWrapper from "./components/DashboardWrapper";
 import Upload from "./components/Upload";
 import CreateChartWrapper from "./components/CreateChartWrapper";
 import ViewChart from "./components/ViewChart";
@@ -18,7 +18,7 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<DashboardWrapper />} />
           <Route path="/upload" element={<Upload />} />
           <Route
             path="/create-chart/:fileId"

@@ -24,7 +24,6 @@ const ViewChart = () => {
     try {
       const response = await API.get(`/upload/chart/${chartId}`);
       setChartData(response.data.chart);
-      console.log(response.data.chart);
     } catch (error) {
       console.error(error);
     }

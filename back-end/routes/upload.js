@@ -79,7 +79,7 @@ router.post(
       await uploadedFile.save();
 
       response.json({
-        message: "File uploaded and saved to DB",
+        message: "File uploaded and saved to DB successfully",
         file: uploadedFile,
       });
     } catch (error) {
@@ -212,58 +212,66 @@ router.get("/charts", authMiddleware, async (request, response) => {
 });
 
 // Delete file route
-router.delete("/delete/:fileId", authMiddleware, async (request, response) => {
-  try {
-    const fileId = request.params.fileId;
-    const userId = request.user.id;
+router.delete(
+  "/delete/file/:fileId",
+  authMiddleware,
+  async (request, response) => {
+    try {
+      const fileId = request.params.fileId;
+      const userId = request.user.id;
 
-    const deletedFile = await FileData.findOneAndDelete({
-      _id: fileId,
-      userId,
-    });
+      const deletedFile = await FileData.findOneAndDelete({
+        _id: fileId,
+        userId,
+      });
 
-    if (!deletedFile) {
-      return response
-        .status(404)
-        .json({ message: "File not found or unauthorized" });
+      if (!deletedFile) {
+        return response
+          .status(404)
+          .json({ message: "File not found or unauthorized" });
+      }
+
+      const filePath = path.join("uploads", deletedFile.fileName);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+
+      return response.json({
+        message: "Your file deleted successfully",
+        deletedFile,
+      });
+    } catch (error) {
+      console.error("Delete error:", error);
+      response.status(500).json({ message: "Internal server error" });
     }
-
-    const filePath = path.join("uploads", deletedFile.fileName);
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
-    }
-
-    return response.json({
-      message: "Your file deleted successfully",
-      deletedFile,
-    });
-  } catch (error) {
-    console.error("Delete error:", error);
-    response.status(500).json({ message: "Internal server error" });
   }
-});
+);
 
 // Delete chart route
-router.delete("/chart/:id", authMiddleware, async (request, response) => {
-  try {
-    const chartId = request.params.id;
+router.delete(
+  "/delete/chart/:id",
+  authMiddleware,
+  async (request, response) => {
+    try {
+      const chartId = request.params.id;
 
-    const deletedChart = await ChartData.findOneAndDelete({
-      _id: chartId,
-      userId: request.user.id,
-    });
+      const deletedChart = await ChartData.findOneAndDelete({
+        _id: chartId,
+        userId: request.user.id,
+      });
 
-    if (!deletedChart) {
-      return response
-        .status(404)
-        .json({ message: "Chart not found or unauthorized" });
+      if (!deletedChart) {
+        return response
+          .status(404)
+          .json({ message: "Chart not found or unauthorized" });
+      }
+
+      response.json({ message: "Chart deleted successfully", deletedChart });
+    } catch (error) {
+      console.error("Delete chart error:", error);
+      response.status(500).json({ message: "Failed to delete chart" });
     }
-
-    response.json({ message: "Chart deleted successfully", deletedChart });
-  } catch (error) {
-    console.error("Delete chart error:", error);
-    response.status(500).json({ message: "Failed to delete chart" });
   }
-});
+);
 
 module.exports = router;

@@ -143,6 +143,7 @@
   width: 300px;
   text-align: center;
 }
+
 .chart-item > p {
   margin: 0;
   color: #555555;
@@ -153,4 +154,35 @@
 .chart-item > p:nth-of-type(2),
 .chart-item > p:nth-of-type(3) {
   text-align: center;
+}
+
+.delete-btn,
+.create-chart-btn,
+.view-chart-btn {
+  background-color: transparent;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  color: red;
+  flex-shrink: 1;
+  flex-grow: 0;
+  font-size: 16px;
+  transition: ease 0.3s;
+  align-self: center;
+}
+
+.create-chart-btn {
+  color: rgb(24, 136, 24);
+  margin-right: 5px;
+}
+
+.view-chart-btn {
+  color: rgb(255, 123, 0);
+  margin-right: 5px;
+}
+
+.delete-btn:hover,
+.create-chart-btn:hover,
+.view-chart-btn:hover {
+  font-size: 22px;
 }

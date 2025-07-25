@@ -16,8 +16,6 @@ const Upload = () => {
   const navigate = useNavigate();
 
   const uploadFile = async (file) => {
-    console.log("Uploading file:", file);
-
     const formData = new FormData();
     formData.append("file", file);
 
@@ -28,7 +26,7 @@ const Upload = () => {
         },
       });
 
-      console.log("Upload success:", response.data);
+      alert(response.data.message);
       navigate(`/create-chart/${response.data.file._id}`);
     } catch (error) {
       alert(error);

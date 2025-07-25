@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import Header from "../Header";
+import { MdDelete } from "react-icons/md";
+import { LuView } from "react-icons/lu";
+import { MdAddChart } from "react-icons/md";
 import "./index.css";
 
 import API from "../../api";
@@ -40,6 +43,46 @@ class Dashboard extends Component {
     }
   };
 
+  onClickCreateChartBtn = (chartId) => {
+    const { navigate } = this.props;
+    navigate(`/create-chart/${chartId}`);
+  };
+
+  onClickViewChartBtn = (chartId) => {
+    const { navigate } = this.props;
+    navigate(`/chart/${chartId}`);
+  };
+
+  onClickDeleteFileBtn = async (fileId) => {
+    try {
+      const response = await API.delete(`/upload/delete/file/${fileId}`);
+
+      this.setState((prevState) => {
+        const newList = prevState.files.filter((file) => file._id !== fileId);
+        return { files: newList };
+      });
+      alert(response.data.message);
+    } catch (error) {
+      alert("File not found. Please refresh the page and try again.");
+    }
+  };
+
+  onClickDeleteChartBtn = async (chartId) => {
+    try {
+      const response = await API.delete(`/upload/delete/chart/${chartId}`);
+
+      this.setState((prevState) => {
+        const newList = prevState.charts.filter(
+          (chart) => chart._id !== chartId
+        );
+        return { charts: newList };
+      });
+      alert(response.data.message);
+    } catch (error) {
+      alert("Chart not found. Please refresh the page and try again.");
+    }
+  };
+
   generateFilesList = () => {
     const { files } = this.state;
 
@@ -55,6 +98,26 @@ class Dashboard extends Component {
             <p>{file.originalFileName}</p>
             <p>{(file.fileSize / 1024).toFixed(2)} KB</p>
             <p>{new Date(file.uploadedAt).toLocaleString()}</p>
+            <button
+              type="button"
+              className="create-chart-btn"
+              title="Create chart"
+              onClick={() => {
+                this.onClickCreateChartBtn(file._id);
+              }}
+            >
+              <MdAddChart />
+            </button>
+            <button
+              type="button"
+              className="delete-btn"
+              title="Delete file"
+              onClick={() => {
+                this.onClickDeleteFileBtn(file._id);
+              }}
+            >
+              <MdDelete />
+            </button>
           </li>
         ))}
       </>
@@ -78,6 +141,26 @@ class Dashboard extends Component {
             <p>{chart.chartType}</p>
             <p>{chart.description.length <= 0 ? "--" : chart.description}</p>
             <p>{new Date(chart.createdAt).toLocaleString()}</p>
+            <button
+              type="button"
+              className="view-chart-btn"
+              title="View chart"
+              onClick={() => {
+                this.onClickViewChartBtn(chart._id);
+              }}
+            >
+              <LuView />
+            </button>
+            <button
+              type="button"
+              className="delete-btn"
+              title="Delete chart"
+              onClick={() => {
+                this.onClickDeleteChartBtn(chart._id);
+              }}
+            >
+              <MdDelete />
+            </button>
           </li>
         ))}
       </>
